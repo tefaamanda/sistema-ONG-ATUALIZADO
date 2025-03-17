@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" dir="ltr">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IMAGEM</title>
+    <script>
+    </script>
+    
+</head>
+<body>
+    
+     <!-- início >> cabeçalho -->
+     <header>
+    </header>
+    <!-- end >> cabeçalho -->
+     <main>
+        <h1>Teste imagem!</h1>
+        <h3 class="text-primary">Sua conta foi criada com sucesso!</h3>
+                    <form id="cadastro-form">
+                        <label class="bold">Logo da ONG</label>
+                            <div class="display">
+                                <input type="file" class="form-control mb-3" id="fileInput" name="imagem">
+                                <p class="espaco">Carregue aqui uma imagem no formato JPG, JPEG ou PNG (no máximo 2MB). Priorize imagens quadradas, caso contrário ela será cortada e centralizada para melhor visualização.</p>
+                            </div>
+                            <button type="submit">Meu perfil →</button>
+                    </form>
+
+         
+        </main>
+    </footer>
+
+  
+    <script>
+        document.getElementById("cadastro-form").addEventListener("submit", async function (event) {
+            event.preventDefault(); // Evita o recarregamento da página
+
+            const form = event.target;
+            const fileInput = form.querySelector("input[type='file']");
+
+            if (!fileInput || fileInput.files.length === 0) {
+                console.error("Nenhum arquivo selecionado.");
+                return;
+            }
+
+            const myHeaders = new Headers();
+            myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c3VhcmlvIjo1MH0.UrfxIQoLbe1sWB0DqXAYqrTBMp6TUyL2FJFaCo642A0");
+
+            const formData = new FormData(form); // Pega todos os dados do formulário
+            formData.append("imagem", fileInput.files[0], "1.jpg");
+
+            const requestOptions = {
+                method: "PUT",
+                headers: myHeaders,
+                body: formData,
+                redirect: "follow",
+            };
+
+            try {
+                const response = await fetch("http://10.92.3.246:5000/imagem/14", requestOptions);
+                if (!response.ok) {
+                throw new Error(`Erro HTTP! Status: ${response.status}`);
+                }
+                const result = await response.text();
+                console.log("Imagem enviada com sucesso:", result);
+            } catch (error) {
+                console.error("Erro ao enviar imagem:", error);
+            }
+            });
+
+    </script>
+</body>
+</html>
